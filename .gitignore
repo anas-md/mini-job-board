@@ -76,3 +76,4 @@ phpunit.result.cache
 # Ignore editor/project files
 *.sublime-workspace
 *.sublime-project
+/.cursor
