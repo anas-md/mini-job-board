@@ -76,6 +76,9 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
 }
 
 .dark {
@@ -119,4 +122,61 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer utilities {
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom utilities for text truncation */
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Additional form styles */
+.peer:checked ~ div {
+  border-color: #6366f1;
+  background-color: #eef2ff;
+}
+
+.peer:checked ~ div .peer-checked\:text-indigo-600 {
+  color: #6366f1;
+}
+
+.peer:checked ~ div .peer-checked\:border-indigo-500 {
+  border-color: #6366f1;
+}
+
+.peer:checked ~ div .peer-checked\:bg-indigo-50 {
+  background-color: #eef2ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
 }
