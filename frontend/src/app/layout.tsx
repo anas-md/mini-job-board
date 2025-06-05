@@ -1,10 +1,29 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins, Lora, Fira_Code } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { Toaster } from "sonner";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({ 
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const lora = Lora({ 
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-serif",
+  display: "swap",
+});
+
+const firaCode = Fira_Code({ 
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Mini Job Board",
@@ -17,11 +36,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${poppins.variable} ${lora.variable} ${firaCode.variable} font-sans`}>
         <Providers>
           {children}
-          <Toaster position="top-right" />
+          <Toaster 
+            position="bottom-right"
+            duration={3000}
+            visibleToasts={3}
+            offset="20px"
+            richColors
+            theme="system"
+          />
         </Providers>
       </body>
     </html>

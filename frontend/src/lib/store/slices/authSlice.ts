@@ -21,7 +21,7 @@ export const login = createAsyncThunk(
   async (data: LoginData, { rejectWithValue }) => {
     try {
       const response = await authAPI.login(data);
-      const { user, token } = response.data;
+      const { user, token } = response.data.data;
       
       if (typeof window !== 'undefined') {
         localStorage.setItem('token', token);
@@ -40,7 +40,7 @@ export const register = createAsyncThunk(
   async (data: RegisterData, { rejectWithValue }) => {
     try {
       const response = await authAPI.register(data);
-      const { user, token } = response.data;
+      const { user, token } = response.data.data;
       
       if (typeof window !== 'undefined') {
         localStorage.setItem('token', token);
@@ -86,7 +86,7 @@ export const checkAuth = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await authAPI.getUser();
-      return response.data.user;
+      return response.data.data;
     } catch (error: any) {
       if (typeof window !== 'undefined') {
         localStorage.removeItem('token');
