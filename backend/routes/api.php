@@ -44,6 +44,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Shared application routes (both roles can view specific applications they're involved with)
     Route::get('/applications/{application}', [JobApplicationController::class, 'show']);
+    Route::get('/applications/{application}/resume', [JobApplicationController::class, 'downloadResume']);
+    Route::get('/applications/{application}/resume/view', [JobApplicationController::class, 'viewResume']);
 
     // Legacy user endpoint for compatibility
     Route::get('/user', function (Request $request) {
