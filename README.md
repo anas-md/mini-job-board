@@ -2,6 +2,8 @@
 
 A full-stack job board application built with Laravel and Next.js that allows employers to post job listings and applicants to browse and apply to jobs.
 
+This project is an assessment for the Full Stack Engineer role at Agmo Artisan Sdn. Bhd.
+
 ## 🛠 Tech Stack
 
 ### Backend
