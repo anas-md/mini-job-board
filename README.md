@@ -48,6 +48,8 @@ A full-stack job board application built with Laravel and Next.js that allows em
 - Pagination for job listings
 - Error handling and user feedback
 - RESTful API architecture
+- **Email notifications for job applications** ✨
+- Background job processing with queues
 
 ## 🚀 Quick Start
 
@@ -90,12 +92,26 @@ DB_USERNAME=your_username
 DB_PASSWORD=your_password
 ```
 
-6. Run migrations and seeders:
+6. Configure email settings in `.env`:
+```env
+# For development (emails logged to storage/logs/laravel.log)
+MAIL_MAILER=log
+MAIL_FROM_ADDRESS="noreply@minijobboard.com"
+MAIL_FROM_NAME="${APP_NAME}"
+APP_FRONTEND_URL=http://localhost:3000
+```
+
+7. Run migrations and seeders:
 ```bash
 php artisan migrate --seed
 ```
 
-7. Start the development server:
+8. Start the queue worker (for email notifications):
+```bash
+php artisan queue:work
+```
+
+9. Start the development server:
 ```bash
 php artisan serve
 ```
@@ -140,10 +156,13 @@ mini-job-board/
 │   │   ├── Http/Controllers/
 │   │   ├── Models/
 │   │   ├── Services/
+│   │   ├── Notifications/  # Email notification 
 │   │   └── ...
 │   ├── database/
 │   │   ├── migrations/
-│   │   └── seeders/
+│   │   ├── seeders/
+│   │   └── factories/
+│   ├── resources/views/emails/ 
 │   ├── routes/api.php
 │   └── ...
 ├── frontend/               # Next.js Application
@@ -183,15 +202,41 @@ The API follows RESTful conventions with the following main endpoints:
 ## 🧪 Testing
 
 ### Backend Tests
+The Laravel backend includes comprehensive tests covering:
+- Authentication (registration, login, logout)
+- Job CRUD operations
+- Application management
+- Email notifications
+- Resume upload/download
+
 ```bash
 cd backend
 php artisan test
+# or
+php artisan test --parallel
 ```
 
 ### Frontend Tests
+React Testing Library tests for components:
+- Authentication forms
+- Job listings
+- Application management
+- UI components
+
 ```bash
 cd frontend
+npm install  # Install test dependencies
 npm run test
+# or for watch mode
+npm run test:watch
+```
+
+### API Testing
+Use the provided Postman collection:
+```bash
+# Import mini-job-board-api.postman_collection.json
+# Set base_url variable to: http://localhost:8000
+# Test all endpoints with authentication
 ```
 
 ## 🔐 Test Accounts
@@ -210,7 +255,8 @@ After running the database seeder, you can use these test accounts:
 
 ### Backend
 ```bash
-php artisan serve     # Start Laravel server only
+php artisan serve     # Start Laravel server
+php artisan queue:work # Start queue worker for emails
 php artisan test      # Run tests
 ```
 
@@ -231,6 +277,7 @@ APP_ENV=local
 APP_KEY=
 APP_DEBUG=true
 APP_URL=http://localhost:8000
+APP_FRONTEND_URL=http://localhost:3000
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -239,6 +286,18 @@ DB_DATABASE=mini_job_board
 DB_USERNAME=
 DB_PASSWORD=
 
+# Email Configuration
+MAIL_MAILER=log
+MAIL_FROM_ADDRESS="noreply@example.com"
+MAIL_FROM_NAME="${APP_NAME}"
+
+# For production SMTP:
+# MAIL_MAILER=smtp
+# MAIL_HOST=smtp.gmail.com
+# MAIL_PORT=587
+# MAIL_USERNAME=your-email@gmail.com
+# MAIL_PASSWORD=your-app-password
+# MAIL_ENCRYPTION=tls
 ```
 
 ### Frontend (.env.local)
