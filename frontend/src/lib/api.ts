@@ -54,11 +54,21 @@ export const jobsAPI = {
 
 // Job Applications API endpoints
 export const applicationsAPI = {
-  applyToJob: (jobId: string, data: { message: string }) => 
-    api.post(`/jobs/${jobId}/apply`, data),
+  applyToJob: (jobId: string, data: FormData) => 
+    api.post(`/jobs/${jobId}/apply`, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }),
   getMyApplications: () => api.get('/my-applications'),
   getApplication: (id: string) => api.get(`/applications/${id}`),
   withdrawApplication: (id: string) => api.delete(`/applications/${id}`),
+  downloadResume: (id: string) => api.get(`/applications/${id}/resume`, {
+    responseType: 'blob',
+  }),
+  viewResume: (id: string) => api.get(`/applications/${id}/resume/view`, {
+    responseType: 'blob',
+  }),
 };
 
 // Type definitions
@@ -104,6 +114,8 @@ export interface JobApplication {
   job_id: number;
   user_id: number;
   message: string;
+  resume_path?: string;
+  resume_url?: string;
   applied_at: string;
   job?: Job;
   user?: User;
