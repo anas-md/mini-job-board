@@ -5,31 +5,41 @@ use App\Models\User;
 test('users can authenticate using the login screen', function () {
     $user = User::factory()->create();
 
-    $response = $this->post('/login', [
+    $response = $this->postJson('/api/auth/login', [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
-    $this->assertAuthenticated();
-    $response->assertNoContent();
+    $response->assertOk()
+             ->assertJsonStructure([
+                 'message',
+                 'data' => [
+                     'user' => ['id', 'name', 'email', 'role'],
+                     'token'
+                 ]
+             ]);
 });
 
 test('users can not authenticate with invalid password', function () {
     $user = User::factory()->create();
 
-    $this->post('/login', [
+    $response = $this->postJson('/api/auth/login', [
         'email' => $user->email,
         'password' => 'wrong-password',
     ]);
 
-    $this->assertGuest();
+    $response->assertStatus(422)
+             ->assertJsonValidationErrors(['email']);
 });
 
 test('users can logout', function () {
     $user = User::factory()->create();
+    $token = $user->createToken('test-token')->plainTextToken;
 
-    $response = $this->actingAs($user)->post('/logout');
+    $response = $this->withHeaders([
+        'Authorization' => 'Bearer ' . $token,
+    ])->postJson('/api/auth/logout');
 
-    $this->assertGuest();
-    $response->assertNoContent();
+    $response->assertOk()
+             ->assertJson(['message' => 'Logged out successfully']);
 });
