@@ -50,6 +50,7 @@ final class StoreJobApplicationRequest extends FormRequest
     {
         return [
             'message' => ['required', 'string', 'max:1000'],
+            'resume' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'], // 5MB max
         ];
     }
 
@@ -63,6 +64,9 @@ final class StoreJobApplicationRequest extends FormRequest
         return [
             'message.required' => 'Please provide a message explaining why you are interested in this position.',
             'message.max' => 'Your application message cannot exceed 1000 characters.',
+            'resume.file' => 'Resume must be a valid file.',
+            'resume.mimes' => 'Resume must be a PDF, DOC, or DOCX file.',
+            'resume.max' => 'Resume file size cannot exceed 5MB.',
         ];
     }
 }

@@ -43,11 +43,13 @@ final class JobController extends Controller
 
         return response()->json([
             'data' => $jobs->items(),
-            'pagination' => [
+            'meta' => [
                 'current_page' => $jobs->currentPage(),
                 'last_page' => $jobs->lastPage(),
                 'per_page' => $jobs->perPage(),
                 'total' => $jobs->total(),
+                'from' => $jobs->firstItem(),
+                'to' => $jobs->lastItem(),
             ],
         ]);
     }
@@ -150,11 +152,13 @@ final class JobController extends Controller
 
         return response()->json([
             'data' => $jobs->items(),
-            'pagination' => [
+            'meta' => [
                 'current_page' => $jobs->currentPage(),
                 'last_page' => $jobs->lastPage(),
                 'per_page' => $jobs->perPage(),
                 'total' => $jobs->total(),
+                'from' => $jobs->firstItem(),
+                'to' => $jobs->lastItem(),
             ],
         ]);
     }

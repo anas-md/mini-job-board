@@ -22,6 +22,7 @@ final class JobApplication extends Model
         'job_id',
         'user_id',
         'message',
+        'resume_path',
         'applied_at',
     ];
 
@@ -75,5 +76,25 @@ final class JobApplication extends Model
     public function scopeByUser($query, int $userId)
     {
         return $query->where('user_id', $userId);
+    }
+
+    /**
+     * Get the full URL for the resume file.
+     */
+    public function getResumeUrlAttribute(): ?string
+    {
+        if (!$this->resume_path) {
+            return null;
+        }
+
+        return asset('storage/' . $this->resume_path);
+    }
+
+    /**
+     * Check if the application has a resume attached.
+     */
+    public function hasResume(): bool
+    {
+        return !empty($this->resume_path);
     }
 }
